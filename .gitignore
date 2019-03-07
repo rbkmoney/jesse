@@ -16,3 +16,4 @@
 /test/elvis_warnings
 /test/*.beam
 .#*
+_build/
