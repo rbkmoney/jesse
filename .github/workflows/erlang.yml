@@ -29,4 +29,4 @@ jobs:
     - name: Dialyzer
       run: rebar3 dialyzer
     - name: Run tests
-      run: rebar3 do eunit, ct
+      run: TEST_DIR=`readlink -f test` rebar3 do eunit, ct
