@@ -17,9 +17,9 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v1
       with:
-        submodules: 'recursive'
+        submodules: recursive
     - name: Get deps
       run: rebar3 get-deps
     - name: Compile
@@ -27,6 +27,6 @@ jobs:
     - name: Xref
       run: rebar3 xref
     - name: Dialyzer
-      run: rebar3 dialyzer 
+      run: rebar3 dialyzer
     - name: Run tests
       run: rebar3 do eunit, ct
