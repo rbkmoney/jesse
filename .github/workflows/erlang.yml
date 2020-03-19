@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
 
     container:
-      image: erlang:${{ env.ERLANG_VERSION }}
+      image: erlang:22.3
 
     steps:
     - name: Checkout
