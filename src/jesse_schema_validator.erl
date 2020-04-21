@@ -25,7 +25,7 @@
 
 %% API
 -export([ validate/3
-        , validate_definition/4
+        , validate_ref/4
         , validate_with_state/3
         ]).
 
@@ -62,18 +62,18 @@ validate(JsonSchema, Value, Options) ->
   NewState = validate_with_state(JsonSchema, Value, State),
   {result(NewState), Value}.
 
-%% @doc Validates json `Data' against `Definition' in `JsonSchema' with `Options'.
+%% @doc Validates json `Data' against a given $ref path in `JsonSchema' with `Options'.
 %% If the given json is valid, then it is returned to the caller as is,
 %% otherwise an exception will be thrown.
--spec validate_definition( Definition :: string()
-                         , JsonSchema :: jesse:json_term()
-                         , Data       :: jesse:json_term()
-                         , Options    :: [{Key :: atom(), Data :: any()}]
-                         ) -> {ok, jesse:json_term()}
-                            | no_return().
-validate_definition(Defintion, JsonSchema, Value, Options) ->
+-spec validate_ref(Path :: string()
+                    , JsonSchema :: jesse:json_term()
+                    , Data       :: jesse:json_term()
+                    , Options    :: [{Key :: atom(), Data :: any()}]
+                    ) -> {ok, jesse:json_term()}
+                      | no_return().
+validate_ref(Path, JsonSchema, Value, Options) ->
   State    = jesse_state:new(JsonSchema, Options),
-  Schema   = make_definition_ref(Defintion),
+  Schema   = make_ref(Path),
   NewState = validate_with_state(Schema, Value, State),
   {result(NewState), Value}.
 
@@ -140,9 +140,9 @@ run_validator(Validator, Value, [Attr | Attrs], State0) ->
                                ),
   run_validator(Validator, Value, Attrs, State).
 
-%% @doc Makes a $ref schema object pointing to the given `Definition'
-%% in schema defintions.
+%% @doc Makes a $ref schema object pointing to the given path
+%% in schema components.
 %% @private
-make_definition_ref(Definition) ->
-  Definition1 = list_to_binary(Definition),
-  [{<<"$ref">>, <<"#/definitions/", Definition1/binary>>}].
+make_ref(Path) ->
+  Path1 = list_to_binary(Path),
+  [{<<"$ref">>, Path1}].
