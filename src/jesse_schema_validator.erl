@@ -26,6 +26,7 @@
 %% API
 -export([ validate/3
         , validate_definition/4
+        , validate_local_ref/4
         , validate_with_state/3
         ]).
 
@@ -62,7 +63,7 @@ validate(JsonSchema, Value, Options) ->
   NewState = validate_with_state(JsonSchema, Value, State),
   {result(NewState), Value}.
 
-%% @doc Validates json `Data' against `Definition' in `JsonSchema' with `Options'.
+%% @doc Validates json `Data' against a given $ref path in `JsonSchema' with `Options'.
 %% If the given json is valid, then it is returned to the caller as is,
 %% otherwise an exception will be thrown.
 -spec validate_definition( Definition :: string()
